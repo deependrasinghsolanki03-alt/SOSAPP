@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SOS BUTTON</title>
+    <style>
+        /* --- LAYOUT STYLES --- */
+        body {
+            background-color: #f0f0f0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            height: 100dvh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            overscroll-behavior: none;
+            touch-action: manipulation;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+            height: 100%;
+            width: 100%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+
+            box-sizing: border-box;
+        }
+
+        /* --- YELLOW BUTTON --- */
+        .yellow-btn-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 30px;
+            box-sizing: border-box;
+        }
+
+        .big-yellow-btn {
+            position: relative;
+            width: 80px;
+            height: 80px;
+
+            border-radius: 50%;
+            border: none;
+            background: radial-gradient(circle at 30% 30%, #fff203, #f78112);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            outline: none;
+            animation: breathe-yellow 2.5s infinite ease-in-out;
+            box-shadow: 0 5px 15px rgba(236, 162, 2, 0.4);
+        }
+
+        .big-yellow-btn:active {
+            animation: none;
+            transform: scale(0.95);
+        }
+
+        /* --- SLIDER STYLES --- */
+        .slider-section {
+            width: 90%;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slider-label-top {
+            text-align: left;
+            font-weight: bold;
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 8px;
+            padding-left: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
+            text-align: center;
+            height: 50px;
+            transition: opacity 0.3s, transform 0.2s;
+        }
+
+        .slider-wrapper.locked {
+            opacity: 0.5;
+            filter: grayscale(100%);
+        }
+
+        .slider-track {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            border-radius: 25px;
+            z-index: 1;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .track-severity { background: linear-gradient(90deg, #fad20a 0%, #f86002 100%); }
+        .track-arm { background: linear-gradient(90deg, #f8f6f9 0%, #f80202c5 100%); }
+
+        .slider-arrows {
+            font-size: 18px;
+            font-weight: 900;
+            color: black;
+            letter-spacing: 1px;
+            pointer-events: none;
+            font-family: "Courier New", monospace;
+        }
+
+        input[type=range] {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            margin: 0;
+            height: 50px;
+            -webkit-appearance: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        input[type=range]:focus { outline: none; }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 48px;
+            width: 48px;
+            border-radius: 50%;
+            background: black;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s;
+        }
+
+        input[type=range].thumb-active::-webkit-slider-thumb {
+            animation: thumb-vibrate 0.8s infinite ease-in-out;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 0 10px;
+            color: #444;
+        }
+
+        .arm-label {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            z-index: 5;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .arm-label.show { opacity: 1; }
+
+        /* --- RED BUTTON --- */
+        .btn-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .big-red-btn {
+            position: relative;
+            /* FIX 5: Use vh (Viewport Height) intelligently */
+            width: 220px;
+            height: 220px;
+            max-width: 40vh;
+            max-height: 40vh;
+
+            font-size: 40px;
+            border-radius: 50%;
+            border: none;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #ff0000);
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+            animation: breathe-red 2.5s infinite ease-in-out;
+            box-shadow: 0 15px 35px rgba(255, 0, 0, 0.4);
+        }
+
+        .big-red-btn:active {
+            animation: none;
+            transform: scale(0.95);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #555;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        /* --- ANIMATIONS SAME AS BEFORE --- */
+        @keyframes breathe-red {
+            0% { transform: scale(1); box-shadow: 0 15px 35px rgba(255, 0, 0, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 15px 50px rgba(255, 0, 0, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 15px 35px rgba(255, 0, 0, 0.4); }
+        }
+        @keyframes breathe-yellow {
+            0% { transform: scale(1); box-shadow: 0 10px 20px rgba(236, 162, 2, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 10px 30px rgba(236, 162, 2, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 10px 20px rgba(236, 162, 2, 0.4); }
+        }
+        @keyframes thumb-vibrate {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            50% { transform: translateX(2px); }
+            75% { transform: translateX(-1px); }
+            100% { transform: translateX(0); }
+        }
+        @keyframes element-shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70% { transform: translateX(-4px); }
+            20%, 40%, 60%, 80% { transform: translateX(4px); }
+        }
+        .hint-shake { animation: element-shake 0.8s cubic-bezier(.36,.07,.19,.97) both; }
+        .ripple {
+            position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.6);
+            transform: scale(0); animation: ripple-animation 0.6s linear; pointer-events: none;
+        }
+        @keyframes ripple-animation { to { transform: scale(4); opacity: 0; } }
+
+        /* --- SMALL SCREEN FIX (Like older Samsung/Oppo) --- */
+        @media (max-height: 650px) {
+            .big-red-btn { width: 180px; height: 180px; font-size: 30px; }
+            .slider-section { transform: scale(0.9); margin-bottom: -10px; }
+            .big-yellow-btn { width: 60px; height: 60px; font-size: 10px; }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="yellow-btn-wrapper">
+        <button class="big-yellow-btn" id="btn2">Accident</button>
+    </div>
+
+    <div class="slider-section">
+        <div class="slider-label-top">Threat Level</div>
+        <div class="slider-wrapper" id="severityWrapper">
+            <div class="slider-track track-severity">
+                <div class="slider-arrows">&lt; &lt; &lt; &nbsp;&nbsp; &gt; &gt; &gt;</div>
+            </div>
+            <input type="range" min="0" max="2" step="1" value="1" id="severitySlider" class="thumb-active">
+            <div class="slider-labels">
+                <span>LOW</span>
+                <span>MED</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="slider-section">
+        <div class="slider-label-top">Firearms Involved ?</div>
+        <div class="slider-wrapper locked" id="armWrapper">
+            <div class="slider-track track-arm">
+                <div class="slider-arrows">&nbsp;&nbsp;&nbsp;&nbsp; &gt; &gt; &gt; &gt; &gt; &gt;</div>
+            </div>
+            <input type="range" min="0" max="1" step="1" value="0" id="armSlider" disabled>
+            <div class="arm-label" id="armText">Yes</div>
+        </div>
+    </div>
+
+    <div class="btn-wrapper">
+        <button class="big-red-btn" id="btn1">SOS</button>
+    </div>
+
+    <div class="help-text">Press for HELP</div>
+
+</div>
+
+<script src="script.js"></script>
+
+
+</body>
+</html>=
