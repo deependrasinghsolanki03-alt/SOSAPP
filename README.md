@@ -93,12 +93,4 @@ This is just **Version 1.0**. In the future, we plan to:
   
 * **Somil Jain** LinkedIn-https://www.linkedin.com/in/somil-jain-78359330b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
 
-*Submitted for [Hackathon Name]*
-
----
-### 👨‍💻 Built with ❤️ by Team Beacon
-* **Deependra Singh Solanki** - (Lead Developer & Logic Architect)
-* *[Team Member 2 Name]* - (UI/UX)
-* *[Team Member 3 Name]* - (Research)
-
-*Submitted for [Hackathon Name]*
+*Submitted for [DevSprint]*
